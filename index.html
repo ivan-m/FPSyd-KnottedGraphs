@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Ivan Lazar Miljenovic" />
+  <title>Knotted Graphs</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css"/>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="reveal.js/css/theme/solarized.css" id="theme">
+  <link rel="stylesheet" href="custom.css"/>
+  <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+  <script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = 'reveal.js/css/print/pdf.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Knotted Graphs</h1>
+    <h2 class="author">Ivan Lazar Miljenovic</h2>
+    <h3 class="date">25 January, 2017</h3>
+</section>
+
+<section><section id="what-is-a-graph" class="titleslide slide level1"><h1>What is a graph?</h1></section></section>
+<section><section id="non-graphs" class="titleslide slide level1"><h1>Non-graphs</h1></section><section id="not-a-graph-1" class="slide level2" data-background="images/plot.png" data-background-size="auto 100%">
+<h2>Not a graph (1)</h2>
+<aside class="notes">
+<ul>
+<li>A plot</li>
+<li>Visual representation of the relationships between variables</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="not-a-graph-2" class="slide level2" data-background="images/chart.png" data-background-size="auto 100%">
+<h2>Not a graph (2)</h2>
+<aside class="notes">
+<ul>
+<li>A chart</li>
+<li>Any form of graphical representation of data</li>
+<li>The visualisations of graphs later on are charts.</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="not-a-graph-3" class="slide level2" data-background="images/function.png" data-background-size="auto 100%">
+<h2>Not a graph (3)</h2>
+<aside class="notes">
+<ul>
+<li>A graph of a function</li>
+<li>Usually lazily referred to as “a graph”</li>
+<li>Makes me squick less than the other types</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="not-a-graph-4" class="slide level2" data-background="images/cow.jpg" data-background-size="auto 100%">
+<h2>Not a graph (4)</h2>
+<aside class="notes">
+<ul>
+<li>This is a cow. It goes “moo”.</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section></section>
+    </div>
+  </div>
+
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,         // Display controls in the bottom right corner
+        progress: true,         // Display a presentation progress bar
+        history: true,          // Push each slide change to the browser history
+        zoomKey: 'shift',
+        center: true,                       // Vertical centering of slides
+        maxScale: 1.5,                  // Bounds for smallest/largest possible content scale
+        slideNumber: false,                // Display the page number of the current slide
+        theme: 'solarized', // available themes are in /css/theme
+        transition: 'zoom', // default/cube/page/concave/zoom/linear/fade/none
+        backgroundTransition: 'slide', // default/none/fade/slide/convex/concave/zoom
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+//          { src: 'reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; }, }
+//          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+]});
+    </script>
+    </body>
+</html>
