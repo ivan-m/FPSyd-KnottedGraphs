@@ -10,6 +10,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="reveal.js/css/reveal.css"/>
   <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; } /* Keyword */
+code > span.dt { color: #dfdfbf; } /* DataType */
+code > span.dv { color: #dcdccc; } /* DecVal */
+code > span.bn { color: #dca3a3; } /* BaseN */
+code > span.fl { color: #c0bed1; } /* Float */
+code > span.ch { color: #dca3a3; } /* Char */
+code > span.st { color: #cc9393; } /* String */
+code > span.co { color: #7f9f7f; } /* Comment */
+code > span.ot { color: #efef8f; } /* Other */
+code > span.al { color: #ffcfaf; } /* Alert */
+code > span.fu { color: #efef8f; } /* Function */
+code > span.er { color: #c3bf9f; } /* Error */
+code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code > span.sc { color: #dca3a3; } /* SpecialChar */
+code > span.vs { color: #cc9393; } /* VerbatimString */
+code > span.ss { color: #cc9393; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #f0dfaf; } /* ControlFlow */
+code > span.op { color: #f0efd0; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code > span.at { } /* Attribute */
+code > span.do { color: #7f9f7f; } /* Documentation */
+code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+  </style>
   <link rel="stylesheet" href="reveal.js/css/theme/solarized.css" id="theme">
   <link rel="stylesheet" href="custom.css"/>
   <!-- If the query includes 'print-pdf', include the PDF print sheet -->
@@ -47,7 +85,7 @@
 </aside>
 <dl>
 </dl>
-</section><section id="not-graph-2" class="slide level2" data-background="images/chart.png" data-background-size="auto 100%">
+</section><section id="not-graph-2" class="slide level2" data-background="images/chart.png" data-background-size="auto 85%">
 <h2></h2>
 <aside class="notes">
 <ul>
@@ -58,7 +96,7 @@
 </aside>
 <dl>
 </dl>
-</section><section id="not-graph-3" class="slide level2" data-background="images/function.png" data-background-size="auto 100%">
+</section><section id="not-graph-3" class="slide level2" data-background="images/function.png" data-background-size="auto 85%">
 <h2></h2>
 <aside class="notes">
 <ul>
@@ -78,6 +116,130 @@
 </aside>
 <dl>
 </dl>
+</section></section>
+<section><section id="lets-see-some-graphs" class="titleslide slide level1"><h1>Let’s see some graphs!</h1></section><section id="graph-1" class="slide level2" data-background="images/Konigsberg.png" data-background-size="auto 100%">
+<h2></h2>
+<aside class="notes">
+<ul>
+<li>Konigsberg bridge problem: what started graph theory.</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="graph-2" class="slide level2" data-background="images/bipartite.png" data-background-size="auto 100%">
+<h2></h2>
+<aside class="notes">
+<ul>
+<li>A bipartite graph</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="graph-3" class="slide level2" data-background="images/flow.png" data-background-size="auto 100%">
+<h2></h2>
+<aside class="notes">
+<ul>
+<li>Flow/control graph</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="graph-4" class="slide level2" data-background="images/planar.png" data-background-size="auto 100%">
+<h2></h2>
+<aside class="notes">
+<ul>
+<li>Planar graph</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="graph-5" class="slide level2" data-background="images/pandoc.jpg" data-background-size="auto 100%">
+<h2></h2>
+<aside class="notes">
+<ul>
+<li>Formats that pandoc can convert from/to</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="graph-6" class="slide level2" data-background="images/social.gif" data-background-size="auto 100%">
+<h2></h2>
+<aside class="notes">
+<ul>
+<li>The social web</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="graph-7" class="slide level2" data-background="images/knot.png" data-background-size="auto 100%">
+<h2></h2>
+<aside class="notes">
+<ul>
+<li>A knot graph; <em>not</em> what this talk is about</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section></section>
+<section><section id="definitions" class="titleslide slide level1"><h1>Definitions</h1></section><section id="what-we-use-graphs-to-represent" class="slide level2">
+<h2>What we use graphs to represent</h2>
+<div class="fragment">
+<blockquote>
+<p>[A] <strong>graph</strong> is a structure amounting to a set of objects in which some pairs of the objects are in some sense “related”.</p>
+</blockquote>
+<aside class="notes">
+<ul>
+<li>From Wikipedia</li>
+<li>In other words, it models <em>relationships</em>.</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</div>
+</section><section id="the-usual-suspects" class="slide level2">
+<h2>The usual suspects</h2>
+<ul>
+<li class="fragment">Adjacency list</li>
+<li class="fragment">Adjacency matrix</li>
+<li class="fragment">Incidence matrix</li>
+</ul>
+<aside class="notes">
+<ul>
+<li>Most Haskell definitions are based on the adjacency list</li>
+<li>Adjacency list: <code>[(Node, [Node], ...)]</code>; can be extended to also store edges in a separate list (but usually isn’t)</li>
+<li>Adjacency matrix: nodes ⨯ nodes</li>
+<li>Incidence matrix: nodes ⨯ edges</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="a-more-formal-definition" class="slide level2">
+<h2>A more formal definition</h2>
+<div class="fragment">
+<blockquote>
+<p>A graph <code>G</code> consists of a set <code>E(G)</code> of <strong>edges</strong> and a (disjoint) set <code>V(G)</code> of <strong>vertices</strong>, together with a relation of <strong>incidence</strong> which associates with each edge two vertices, not necessarily distinct, called its <strong>ends</strong>.</p>
+</blockquote>
+<aside class="notes">
+<ul>
+<li>Tutte, “A theory of 3-connected graphs”</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</div>
+</section><section id="this-sounds-familiar" class="slide level2">
+<h2>This sounds familiar…</h2>
+<div class="fragment">
+<p>So we have objects (nodes and edges) and a relationship (incidence).</p>
+</div>
+</section><section id="a-graph-is-well-a-graph" class="slide level2">
+<h2>A graph is, well, a graph!</h2>
+<ul>
+<li class="fragment"><div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Graph</span> nodes edges
+  <span class="fu">=</span> <span class="dt">Gr</span> (<span class="dt">Graph</span> {nodes <span class="fu">|</span> edges}
+              incidence)</code></pre></div></li>
+<li class="fragment">If only it was that simple…</li>
+</ul>
 </section></section>
     </div>
   </div>
