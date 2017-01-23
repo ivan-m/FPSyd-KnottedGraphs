@@ -16,14 +16,14 @@ Notes
 :   * A plot
     * Visual representation of the relationships between variables
 
-## {id="not-graph-2" data-background="images/chart.png" data-background-size="auto 100%"}
+## {id="not-graph-2" data-background="images/chart.png" data-background-size="auto 85%"}
 
 Notes
 :   * A chart
     * Any form of graphical representation of data
     * The visualisations of graphs later on are charts.
 
-## {id="not-graph-3" data-background="images/function.png" data-background-size="auto 100%"}
+## {id="not-graph-3" data-background="images/function.png" data-background-size="auto 85%"}
 
 Notes
 :   * A graph of a function
