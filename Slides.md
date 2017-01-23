@@ -72,6 +72,62 @@ Notes
 
 Notes
 :   * A knot graph; _not_ what this talk is about
+
+Definitions
+===========
+
+## What we use graphs to represent
+
+. . .
+
+> [A] **graph** is a structure amounting to a set of objects in which
+> some pairs of the objects are in some sense "related".
+
+Notes
+:   * From Wikipedia
+    * In other words, it models _relationships_.
+
+## The usual suspects
+
+> * Adjacency list
+> * Adjacency matrix
+> * Incidence matrix
+
+Notes
+:   * Most Haskell definitions are based on the adjacency list
+    * Adjacency list: `[(Node, [Node], ...)]`; can be extended to also
+      store edges in a separate list (but usually isn't)
+    * Adjacency matrix: nodes ⨯ nodes
+    * Incidence matrix: nodes ⨯ edges
+
+## A more formal definition
+
+. . .
+
+> A graph `G` consists of a set `E(G)` of **edges** and a (disjoint)
+> set `V(G)` of **vertices**, together with a relation of
+> **incidence** which associates with each edge two vertices, not
+> necessarily distinct, called its **ends**.
+
+Notes
+:   * Tutte, "A theory of 3-connected graphs"
+
+## This sounds familiar...
+
+. . .
+
+So we have objects (nodes and edges) and a relationship (incidence).
+
+## A graph is, well, a graph!
+
+> *
+>     ```haskell
+>     data Graph nodes edges
+>       = Gr (Graph {nodes | edges}
+>                   incidence)
+>     ```
+> * If only it was that simple...
+
 ---
 # reveal.js settings
 theme: solarized
