@@ -10,27 +10,27 @@ What is a graph?
 Non-graphs
 ==========
 
-## Not a graph (1) {data-background="images/plot.png" data-background-size="auto 100%"}
+## {id="not-graph-1" data-background="images/plot.png" data-background-size="auto 100%"}
 
 Notes
 :   * A plot
     * Visual representation of the relationships between variables
 
-## Not a graph (2) {data-background="images/chart.png" data-background-size="auto 100%"}
+## {id="not-graph-2" data-background="images/chart.png" data-background-size="auto 100%"}
 
 Notes
 :   * A chart
     * Any form of graphical representation of data
     * The visualisations of graphs later on are charts.
 
-## Not a graph (3) {data-background="images/function.png" data-background-size="auto 100%"}
+## {id="not-graph-3" data-background="images/function.png" data-background-size="auto 100%"}
 
 Notes
 :   * A graph of a function
     * Usually lazily referred to as "a graph"
     * Makes me squick less than the other types
 
-## Not a graph (4) {data-background="images/cow.jpg" data-background-size="auto 100%"}
+## {id="not-graph-4" data-background="images/cow.jpg" data-background-size="auto 100%"}
 
 Notes
 :   * This is a cow.  It goes "moo".
