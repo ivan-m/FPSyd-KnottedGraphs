@@ -73,6 +73,11 @@ Notes
 Notes
 :   * A knot graph; _not_ what this talk is about
 
+## {id="graph-8}
+
+Notes
+:   * The empty graph!
+
 Definitions
 ===========
 
