@@ -222,6 +222,8 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 <aside class="notes">
 <ul>
 <li>Tutte, “A theory of 3-connected graphs”</li>
+<li>Can be easily amended to cover hypergraphs</li>
+<li>No <code>edge = (vertex, vertex)</code>, so can add in extra stuff (e.g. directionality)!</li>
 </ul>
 </aside>
 <dl>
@@ -240,6 +242,137 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
               incidence)</code></pre></div></li>
 <li class="fragment">If only it was that simple…</li>
 </ul>
+</section></section>
+<section><section id="tie-a-knot-in-it" class="titleslide slide level1"><h1>Tie a knot in it</h1></section><section id="tying-the-knot" class="slide level2">
+<h2>Tying the knot</h2>
+<ul>
+<li class="fragment">Using laziness to create a value that depends on itself.</li>
+<li class="fragment"><code class="sourceCode haskell">fibs <span class="fu">=</span> <span class="dv">1</span> <span class="fu">:</span> <span class="dv">1</span> <span class="fu">:</span> zipWith (<span class="fu">+</span>) fibs (tail fibs)</code></li>
+</ul>
+</section><section id="the-idea" class="slide level2">
+<h2>The idea</h2>
+<div class="fragment">
+<p>Can we use tying the knot at the conceptual/data structural level?</p>
+</div>
+</section><section id="how-to-go-about-it" class="slide level2">
+<h2>How to go about it</h2>
+<ol type="1">
+<li class="fragment">Assume we have an existing graph data structure</li>
+<li class="fragment">Define a new graph data structure in terms of the existing one</li>
+<li class="fragment"><del>Recurse</del> Try to set <code>new == existing</code></li>
+<li class="fragment">Profit ?!?</li>
+</ol>
+</section><section id="levels" class="slide level2">
+<h2>Levels</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td>Theoretical</td>
+<td>Vertices</td>
+<td>Arcs</td>
+</tr>
+<tr class="even">
+<td>Existing graph structure</td>
+<td>Nodes</td>
+<td>Edges</td>
+</tr>
+<tr class="odd">
+<td>New graph structure</td>
+<td>Objects</td>
+<td>Relationships</td>
+</tr>
+</tbody>
+</table>
+</section><section id="specification" class="slide level2">
+<h2>Specification</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">Graph</span> g <span class="kw">where</span>
+  <span class="kw">type</span> <span class="dt">Vertex</span> g
+  <span class="kw">type</span> <span class="dt">Arc</span>    g
+
+<span class="ot">  vertices   ::</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Vertex</span> g)
+<span class="ot">  arcs       ::</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Arc</span> g)
+<span class="ot">  incidentTo ::</span> g <span class="ot">-&gt;</span> <span class="dt">Vertex</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Arc</span> g)
+<span class="ot">  ends       ::</span> g <span class="ot">-&gt;</span> <span class="dt">Arc</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Vertex</span> g)</code></pre></div>
+<aside class="notes">
+<ul>
+<li>Assume some <code>Set</code> type</li>
+<li>For <code>ends</code>, non-hyper graphs require a 2-Set.</li>
+<li>Should <code>incidentTo</code> and <code>ends</code> return a <code>Maybe</code>?</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="existing-structure" class="slide level2">
+<h2>Existing structure</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Graph</span> (<span class="dt">GrEx</span> node edge) <span class="kw">where</span>
+  <span class="kw">type</span> <span class="dt">Vertex</span> (<span class="dt">GrEx</span> node edge) <span class="fu">=</span> node
+  <span class="kw">type</span> <span class="dt">Arc</span>    (<span class="dt">GrEx</span> node edge) <span class="fu">=</span> edge
+
+  <span class="fu">...</span></code></pre></div>
+<aside class="notes">
+<ul>
+<li>This lets us plug in our preferred node and edge types.</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="new-structure-1" class="slide level2">
+<h2>New Structure (1)</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Node</span> object relationship a <span class="kw">where</span>
+  <span class="co">-- Requires an identifier</span>
+  <span class="dt">Object</span><span class="ot"> ::</span> object <span class="ot">-&gt;</span> <span class="dt">Node</span> <span class="dt">Object</span>
+
+  <span class="co">-- Takes an identifier along with the ends</span>
+  <span class="dt">Relationship</span><span class="ot"> ::</span> relationship
+                  <span class="ot">-&gt;</span> <span class="dt">Node</span> <span class="dt">Relationship</span>
+
+<span class="ot">getO ::</span> <span class="dt">Node</span> o r a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> o
+<span class="ot">getR ::</span> <span class="dt">Node</span> o r a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> r</code></pre></div>
+<aside class="notes">
+<ul>
+<li>Pseudo-GADT usage</li>
+<li>Blindly assume that we can have an implicit <code>forall a. Node a</code> when we need it.</li>
+<li>Deal with what the identifiers are later.</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="new-structure-2" class="slide level2">
+<h2>New Structure (2)</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Edge</span> <span class="fu">=</span> <span class="dt">Edge</span> (<span class="dt">Node</span> <span class="dt">Object</span>)
+                 (<span class="dt">Node</span> <span class="dt">Relationship</span>)
+
+<span class="kw">newtype</span> <span class="dt">GrNew</span> object relationship
+  <span class="fu">=</span> <span class="dt">GrNew</span> (<span class="dt">GrEx</span> (<span class="dt">Node</span> object relationship) <span class="dt">Edge</span>)</code></pre></div>
+<aside class="notes">
+<ul>
+<li>Order of values in <code>Edge</code> is arbitrary</li>
+<li>Using implicit <code>forall</code></li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="new-structure-3" class="slide level2">
+<h2>New Structure (3)</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Graph</span> (<span class="dt">GrNew</span> o r) <span class="kw">where</span>
+  <span class="kw">type</span> <span class="dt">Vertex</span> (<span class="dt">GrNew</span> o r) <span class="fu">=</span> o
+  <span class="kw">type</span> <span class="dt">Arc</span>    (<span class="dt">GrNew</span> o r) <span class="fu">=</span> r
+
+  vertices     <span class="fu">=</span> mapMaybe getO <span class="fu">.</span> vertices
+  arcs         <span class="fu">=</span> mapMaybe getR <span class="fu">.</span> vertices
+  incidentTo g <span class="fu">=</span> mapMaybe getR <span class="fu">.</span> incidentTo g
+                   <span class="fu">.</span> <span class="dt">Object</span>
+  ends       g <span class="fu">=</span> mapMaybe getO <span class="fu">.</span> incidentTo g
+                   <span class="fu">.</span> <span class="dt">Relationship</span></code></pre></div>
+<aside class="notes">
+<ul>
+<li>Blindly unwrapping <code>GrNew</code> here… if only there was a library that could help with that…</li>
+<li>Also assuming <code>mapMaybe</code> works on <code>Set</code> values</li>
+<li>Lots of mirroring between objects and relationships here…</li>
+</ul>
+</aside>
+<dl>
+</dl>
 </section></section>
     </div>
   </div>
