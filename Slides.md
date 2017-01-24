@@ -111,6 +111,9 @@ Notes
 
 Notes
 :   * Tutte, "A theory of 3-connected graphs"
+    * Can be easily amended to cover hypergraphs
+    * No `edge = (vertex, vertex)`, so can add in extra stuff
+      (e.g. directionality)!
 
 ## This sounds familiar...
 
