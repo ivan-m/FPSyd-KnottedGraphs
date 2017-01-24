@@ -131,6 +131,121 @@ So we have objects (nodes and edges) and a relationship (incidence).
 >     ```
 > * If only it was that simple...
 
+Tie a knot in it
+================
+
+## Tying the knot
+
+> * Using laziness to create a value that depends on itself.
+> * `fibs = 1 : 1 : zipWith (+) fibs (tail fibs)`{.haskell}
+
+## The idea
+
+. . .
+
+Can we use tying the knot at the conceptual/data structural level?
+
+## How to go about it
+
+> 1. Assume we have an existing graph data structure
+> 2. Define a new graph data structure in terms of the existing one
+> 3. ~~Recurse~~ Try to set `new == existing`
+> 4. Profit ?!?
+
+## Levels
+
+|                          |          |               |
+|--------------------------+----------+---------------|
+| Theoretical              | Vertices | Arcs          |
+| Existing graph structure | Nodes    | Edges         |
+| New graph structure      | Objects  | Relationships |
+
+## Specification
+
+```haskell
+class Graph g where
+  type Vertex g
+  type Arc    g
+
+  vertices   :: g -> Set (Vertex g)
+  arcs       :: g -> Set (Arc g)
+  incidentTo :: g -> Vertex g -> Set (Arc g)
+  ends       :: g -> Arc g -> Set (Vertex g)
+```
+
+Notes
+:   * Assume some `Set` type
+    * For `ends`, non-hyper graphs require a 2-Set.
+    * Should `incidentTo` and `ends` return a `Maybe`?
+
+## Existing structure
+
+```haskell
+instance Graph (GrEx node edge) where
+  type Vertex (GrEx node edge) = node
+  type Arc    (GrEx node edge) = edge
+
+  ...
+```
+
+Notes
+:   * This lets us plug in our preferred node and edge types.
+
+## New Structure (1)
+
+```haskell
+data Node object relationship a where
+  -- Requires an identifier
+  Object :: object -> Node Object
+
+  -- Takes an identifier along with the ends
+  Relationship :: relationship
+                  -> Node Relationship
+
+getO :: Node o r a -> Maybe o
+getR :: Node o r a -> Maybe r
+```
+
+Notes
+:   * Pseudo-GADT usage
+    * Blindly assume that we can have an implicit `forall a. Node a`
+      when we need it.
+    * Deal with what the identifiers are later.
+
+## New Structure (2)
+
+```haskell
+data Edge = Edge (Node Object)
+                 (Node Relationship)
+
+newtype GrNew object relationship
+  = GrNew (GrEx (Node object relationship) Edge)
+```
+
+Notes
+:   * Order of values in `Edge` is arbitrary
+    * Using implicit `forall`
+
+## New Structure (3)
+
+```haskell
+instance Graph (GrNew o r) where
+  type Vertex (GrNew o r) = o
+  type Arc    (GrNew o r) = r
+
+  vertices     = mapMaybe getO . vertices
+  arcs         = mapMaybe getR . vertices
+  incidentTo g = mapMaybe getR . incidentTo g
+                   . Object
+  ends       g = mapMaybe getO . incidentTo g
+                   . Relationship
+```
+Notes
+:   * Blindly unwrapping `GrNew` here... if only there was a library
+      that could help with that...
+    * Also assuming `mapMaybe` works on `Set` values
+    * Lots of mirroring between objects and relationships here...
+
 ---
 # reveal.js settings
 theme: solarized
