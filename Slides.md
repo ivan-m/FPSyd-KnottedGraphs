@@ -318,6 +318,83 @@ Notes
 :   * Some people still complain about having to get an `Int` to use
       as the identifier in FGL.
 
+Simple, directed graphs
+=======================
+
+## To continue on though, let's use this simplified example.
+
+Notes
+:   * No multiple edges or loops
+    * Directionality (could do with undirected, but have to have
+      2-sets).
+
+
+## Implementation
+
+```haskell
+data Simple node
+  = Gr (Set node) (Set (node, node))
+
+instance Graph (Simple node) where
+  type Vertex (Simple node) = node
+  type Arc    (Simple node) = (node, node)
+
+  ...
+```
+
+Notes
+:   * Assuming no metadata
+    * Requires some more work for implementing `incident`
+
+## Algebra of graphs
+
+> * Recent series of blog posts by Andrey Mokhov.
+> * Adds the following functions:
+>
+>     ```haskell
+>     vertex  :: Vertex g -> g
+>     overlay :: g -> g -> g
+>     connect :: g -> g -> g
+>     ```
+
+Notes
+:   * Not going to go through in detail
+    * Just show how to implement
+
+## vertex
+
+```haskell
+vertex n = Gr (singleton n) empty
+```
+
+## overlay
+
+```haskell
+-- Graph union
+overlay (Gr n1 e1) (Gr n2 e2)
+  = Gr (n1 `union` n2)
+       (e1 `union` e2)
+```
+
+## connect
+
+```haskell
+-- As with overlay,
+-- but add edges from n1 to n2
+connect (Gr n1 e1) (Gr n2 e2)
+  = Gr (n1 `union` n2)
+       (e1 `union` e2
+           `union` (zip n1 n2))
+```
+
+Notes
+:   * Assuming a `zip` on `Set`s.
+
+## This is actually how it was already done
+
+> * Andrey had already used this exact datatype.
+> * But I've "derived" it.
+
 
 ---
 # reveal.js settings
