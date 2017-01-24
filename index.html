@@ -180,6 +180,15 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 </aside>
 <dl>
 </dl>
+</section><section id="&quot;graph-8" class="slide level2">
+<h2></h2>
+<aside class="notes">
+<ul>
+<li>The empty graph!</li>
+</ul>
+</aside>
+<dl>
+</dl>
 </section></section>
 <section><section id="definitions" class="titleslide slide level1"><h1>Definitions</h1></section><section id="what-we-use-graphs-to-represent" class="slide level2">
 <h2>What we use graphs to represent</h2>
@@ -247,7 +256,8 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 <h2>Tying the knot</h2>
 <ul>
 <li class="fragment">Using laziness to create a value that depends on itself.</li>
-<li class="fragment"><code class="sourceCode haskell">fibs <span class="fu">=</span> <span class="dv">1</span> <span class="fu">:</span> <span class="dv">1</span> <span class="fu">:</span> zipWith (<span class="fu">+</span>) fibs (tail fibs)</code></li>
+<li class="fragment"><div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">fibs <span class="fu">=</span> <span class="dv">1</span> <span class="fu">:</span> <span class="dv">1</span> <span class="fu">:</span> zipWith (<span class="fu">+</span>) fibs
+                           (tail fibs)</code></pre></div></li>
 </ul>
 </section><section id="the-idea" class="slide level2">
 <h2>The idea</h2>
@@ -289,15 +299,18 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
   <span class="kw">type</span> <span class="dt">Vertex</span> g
   <span class="kw">type</span> <span class="dt">Arc</span>    g
 
-<span class="ot">  vertices   ::</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Vertex</span> g)
-<span class="ot">  arcs       ::</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Arc</span> g)
-<span class="ot">  incidentTo ::</span> g <span class="ot">-&gt;</span> <span class="dt">Vertex</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Arc</span> g)
-<span class="ot">  ends       ::</span> g <span class="ot">-&gt;</span> <span class="dt">Arc</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Vertex</span> g)</code></pre></div>
+<span class="ot">  vertices ::</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Vertex</span> g)
+<span class="ot">  arcs     ::</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Arc</span> g)
+<span class="ot">  incident ::</span> g <span class="ot">-&gt;</span> <span class="dt">Vertex</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Arc</span> g)
+<span class="ot">  ends     ::</span> g <span class="ot">-&gt;</span> <span class="dt">Arc</span> g <span class="ot">-&gt;</span> <span class="dt">Set</span> (<span class="dt">Vertex</span> g)</code></pre></div>
 <aside class="notes">
 <ul>
-<li>Assume some <code>Set</code> type</li>
+<li>Assume some <code>Set</code> type
+<ul>
+<li>Actually <code>Bag</code> or <code>MultiSet</code></li>
+</ul></li>
 <li>For <code>ends</code>, non-hyper graphs require a 2-Set.</li>
-<li>Should <code>incidentTo</code> and <code>ends</code> return a <code>Maybe</code>?</li>
+<li>Should <code>incident</code> and <code>ends</code> return a <code>Maybe</code>?</li>
 </ul>
 </aside>
 <dl>
@@ -319,10 +332,8 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 </section><section id="new-structure-1" class="slide level2">
 <h2>New Structure (1)</h2>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Node</span> object relationship a <span class="kw">where</span>
-  <span class="co">-- Requires an identifier</span>
   <span class="dt">Object</span><span class="ot"> ::</span> object <span class="ot">-&gt;</span> <span class="dt">Node</span> <span class="dt">Object</span>
 
-  <span class="co">-- Takes an identifier along with the ends</span>
   <span class="dt">Relationship</span><span class="ot"> ::</span> relationship
                   <span class="ot">-&gt;</span> <span class="dt">Node</span> <span class="dt">Relationship</span>
 
@@ -343,7 +354,8 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
                  (<span class="dt">Node</span> <span class="dt">Relationship</span>)
 
 <span class="kw">newtype</span> <span class="dt">GrNew</span> object relationship
-  <span class="fu">=</span> <span class="dt">GrNew</span> (<span class="dt">GrEx</span> (<span class="dt">Node</span> object relationship) <span class="dt">Edge</span>)</code></pre></div>
+  <span class="fu">=</span> <span class="dt">GrNew</span> (<span class="dt">GrEx</span> (<span class="dt">Node</span> object relationship)
+                <span class="dt">Edge</span>)</code></pre></div>
 <aside class="notes">
 <ul>
 <li>Order of values in <code>Edge</code> is arbitrary</li>
@@ -357,13 +369,12 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Graph</span> (<span class="dt">GrNew</span> o r) <span class="kw">where</span>
   <span class="kw">type</span> <span class="dt">Vertex</span> (<span class="dt">GrNew</span> o r) <span class="fu">=</span> o
   <span class="kw">type</span> <span class="dt">Arc</span>    (<span class="dt">GrNew</span> o r) <span class="fu">=</span> r
-
-  vertices     <span class="fu">=</span> mapMaybe getO <span class="fu">.</span> vertices
-  arcs         <span class="fu">=</span> mapMaybe getR <span class="fu">.</span> vertices
-  incidentTo g <span class="fu">=</span> mapMaybe getR <span class="fu">.</span> incidentTo g
-                   <span class="fu">.</span> <span class="dt">Object</span>
-  ends       g <span class="fu">=</span> mapMaybe getO <span class="fu">.</span> incidentTo g
-                   <span class="fu">.</span> <span class="dt">Relationship</span></code></pre></div>
+  vertices   <span class="fu">=</span> mapMaybe getO <span class="fu">.</span> vertices
+  arcs       <span class="fu">=</span> mapMaybe getR <span class="fu">.</span> vertices
+  incident g <span class="fu">=</span> mapMaybe getR <span class="fu">.</span> incident g
+                 <span class="fu">.</span> <span class="dt">Object</span>
+  ends     g <span class="fu">=</span> mapMaybe getO <span class="fu">.</span> incident g
+                 <span class="fu">.</span> <span class="dt">Relationship</span></code></pre></div>
 <aside class="notes">
 <ul>
 <li>Blindly unwrapping <code>GrNew</code> here… if only there was a library that could help with that…</li>
@@ -401,12 +412,137 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 </section><section id="do-we-still-need-the-edges-set" class="slide level2">
 <h2>Do we still need the <code>edges</code> set?</h2>
 <ul>
-<li class="fragment">Explicit realisation of the <code>incidentTo</code> and <code>ends</code> methods.</li>
+<li class="fragment">Explicit realisation of the <code>incident</code> and <code>ends</code> methods.</li>
 <li class="fragment">Why not attach those values directly to the <code>objects</code> and <code>relationships</code>?</li>
 <li class="fragment">Convert these <code>Set</code>s into dictionaries.</li>
 </ul>
 </section><section id="havent-you-just-re-invented-adjacency-lists" class="slide level2">
 <h2>Haven’t you just re-invented adjacency lists?</h2>
+<ul>
+<li class="fragment">Not quite.</li>
+<li class="fragment">I’ve augmented it with an <em>incidence list</em>.</li>
+<li class="fragment">Most obvious implementations don’t do this.</li>
+<li class="fragment">FGL in particular is an optimised adjacency list.</li>
+</ul>
+</section><section id="what-does-this-mean" class="slide level2">
+<h2>What does this mean?</h2>
+<ul>
+<li class="fragment">Most people are used to having to have an arbitrary <code>Node</code> type.</li>
+<li class="fragment">But what about edges?</li>
+<li class="fragment">With this, we need to decide upon an identifier for edges as well.</li>
+</ul>
+</section><section id="the-usual-approach" class="slide level2">
+<h2>The usual approach</h2>
+<p><code>type Edge = (Node, Node)</code></p>
+<div class="fragment">
+<h3 id="section">😠</h3>
+</div>
+</section><section id="why-do-this" class="slide level2">
+<h2>Why do this?</h2>
+<ul>
+<li class="fragment">I’m trying to create an <em>arbitrary</em> (hyper)graph structure.</li>
+<li class="fragment">I believe directionality, labels, planarity, etc. are <em>extra</em> information that provide extra meta-relationships.</li>
+<li class="fragment">To differentiate multiple edges, we can’t just rely on <code>(Node, Node)</code>.</li>
+</ul>
+<aside class="notes">
+<ul>
+<li>Some people still complain about having to get an <code>Int</code> to use as the identifier in FGL.</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section></section>
+<section><section id="simple-directed-graphs" class="titleslide slide level1"><h1>Simple, directed graphs</h1></section><section id="to-continue-on-though-lets-use-this-simplified-example." class="slide level2">
+<h2>To continue on though, let’s use this simplified example.</h2>
+<aside class="notes">
+<ul>
+<li>No multiple edges or loops</li>
+<li>Directionality (could do with undirected, but have to have 2-sets).</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="implementation" class="slide level2">
+<h2>Implementation</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Simple</span> node
+  <span class="fu">=</span> <span class="dt">Gr</span> (<span class="dt">Set</span> node) (<span class="dt">Set</span> (node, node))
+
+<span class="kw">instance</span> <span class="dt">Graph</span> (<span class="dt">Simple</span> node) <span class="kw">where</span>
+  <span class="kw">type</span> <span class="dt">Vertex</span> (<span class="dt">Simple</span> node) <span class="fu">=</span> node
+  <span class="kw">type</span> <span class="dt">Arc</span>    (<span class="dt">Simple</span> node) <span class="fu">=</span> (node, node)
+
+  <span class="fu">...</span></code></pre></div>
+<aside class="notes">
+<ul>
+<li>Assuming no metadata</li>
+<li>Requires some more work for implementing <code>incident</code></li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="algebra-of-graphs" class="slide level2">
+<h2>Algebra of graphs</h2>
+<ul>
+<li class="fragment">Recent series of blog posts by Andrey Mokhov.</li>
+<li class="fragment"><p>Adds the following functions:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">vertex  ::</span> <span class="dt">Vertex</span> g <span class="ot">-&gt;</span> g
+<span class="ot">overlay ::</span> g <span class="ot">-&gt;</span> g <span class="ot">-&gt;</span> g
+<span class="ot">connect ::</span> g <span class="ot">-&gt;</span> g <span class="ot">-&gt;</span> g</code></pre></div></li>
+</ul>
+<aside class="notes">
+<ul>
+<li>Not going to go through in detail</li>
+<li>Just show how to implement</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="vertex" class="slide level2">
+<h2>vertex</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">vertex n <span class="fu">=</span> <span class="dt">Gr</span> (singleton n) empty</code></pre></div>
+</section><section id="overlay" class="slide level2">
+<h2>overlay</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Graph union</span>
+overlay (<span class="dt">Gr</span> n1 e1) (<span class="dt">Gr</span> n2 e2)
+  <span class="fu">=</span> <span class="dt">Gr</span> (n1 <span class="ot">`union`</span> n2)
+       (e1 <span class="ot">`union`</span> e2)</code></pre></div>
+</section><section id="connect" class="slide level2">
+<h2>connect</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- As with overlay,</span>
+<span class="co">-- but add edges from n1 to n2</span>
+connect (<span class="dt">Gr</span> n1 e1) (<span class="dt">Gr</span> n2 e2)
+  <span class="fu">=</span> <span class="dt">Gr</span> (n1 <span class="ot">`union`</span> n2)
+       (e1 <span class="ot">`union`</span> e2
+           <span class="ot">`union`</span> (zip n1 n2))</code></pre></div>
+<aside class="notes">
+<ul>
+<li>Assuming a <code>zip</code> on <code>Set</code>s.</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="this-is-actually-how-it-was-already-done" class="slide level2">
+<h2>This is actually how it was already done</h2>
+<ul>
+<li class="fragment">Andrey had already used this exact datatype.</li>
+<li class="fragment">But I’ve “derived” it.</li>
+</ul>
+</section></section>
+<section><section id="ex-relatio" class="titleslide slide level1"><h1>ex relatio</h1></section><section id="is-this-newnovel" class="slide level2">
+<h2>Is this new/novel??</h2>
+<ul>
+<li class="fragment">Probably not that much.</li>
+<li class="fragment">I just wanted to see where I would get to.</li>
+</ul>
+</section><section id="whats-next" class="slide level2">
+<h2>What’s next?</h2>
+<ul>
+<li class="fragment">Try and extend this further if possible.
+<ul>
+<li class="fragment">Help please!</li>
+</ul></li>
+<li class="fragment">Use this to implement a new library.</li>
+</ul>
 </section></section>
     </div>
   </div>
