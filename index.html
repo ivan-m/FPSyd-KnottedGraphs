@@ -374,6 +374,40 @@ code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
 <dl>
 </dl>
 </section></section>
+<section><section id="unravelling-the-knot" class="titleslide slide level1"><h1>Unravelling the knot</h1></section><section id="objects-relationships" class="slide level2">
+<h2>Objects &amp; Relationships</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Edge</span> <span class="fu">=</span> <span class="dt">Edge</span> (<span class="dt">Node</span> <span class="dt">Object</span>)
+                 (<span class="dt">Node</span> <span class="dt">Relationship</span>)</code></pre></div>
+<ul>
+<li class="fragment">No object has an edge with another object</li>
+<li class="fragment">No relationship has an edge with another relationship</li>
+<li class="fragment">So why are they combined in the same datatype?</li>
+</ul>
+</section><section id="nodes-and-edges-are-bipartite" class="slide level2" data-background="images/bipartite.png" data-background-size="auto 100%">
+<h2>Nodes and edges are bipartite</h2>
+</section><section id="split-them-apart" class="slide level2">
+<h2>Split them apart</h2>
+<ul>
+<li class="fragment">Before: <code>G = (object | relationship) + edges</code></li>
+<li class="fragment">Now: <code>G = objects + relationships + edges</code></li>
+</ul>
+<aside class="notes">
+<ul>
+<li>We now have three sets rather than the two found in the definition.</li>
+</ul>
+</aside>
+<dl>
+</dl>
+</section><section id="do-we-still-need-the-edges-set" class="slide level2">
+<h2>Do we still need the <code>edges</code> set?</h2>
+<ul>
+<li class="fragment">Explicit realisation of the <code>incidentTo</code> and <code>ends</code> methods.</li>
+<li class="fragment">Why not attach those values directly to the <code>objects</code> and <code>relationships</code>?</li>
+<li class="fragment">Convert these <code>Set</code>s into dictionaries.</li>
+</ul>
+</section><section id="havent-you-just-re-invented-adjacency-lists" class="slide level2">
+<h2>Haven’t you just re-invented adjacency lists?</h2>
+</section></section>
     </div>
   </div>
 
