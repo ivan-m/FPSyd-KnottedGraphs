@@ -288,6 +288,35 @@ Notes
 
 ## Haven't you just re-invented adjacency lists?
 
+> * Not quite.
+> * I've augmented it with an _incidence list_.
+> * Most obvious implementations don't do this.
+> * FGL in particular is an optimised adjacency list.
+
+## What does this mean?
+
+> * Most people are used to having to have an arbitrary `Node` type.
+> * But what about edges?
+> * With this, we need to decide upon an identifier for edges as well.
+
+## The usual approach
+
+`type Edge = (Node, Node)`
+
+. . .
+
+### 😠
+
+## Why do this?
+
+> * I'm trying to create an _arbitrary_ (hyper)graph structure.
+> * I believe directionality, labels, planarity, etc. are _extra_
+>   information that provide extra meta-relationships.
+> * To differentiate multiple edges, we can't just rely on `(Node, Node)`.
+
+Notes
+:   * Some people still complain about having to get an `Int` to use
+      as the identifier in FGL.
 
 
 ---
