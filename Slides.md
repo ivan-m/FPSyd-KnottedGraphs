@@ -246,6 +246,42 @@ Notes
     * Also assuming `mapMaybe` works on `Set` values
     * Lots of mirroring between objects and relationships here...
 
+Unravelling the knot
+====================
+
+## Objects & Relationships
+
+```haskell
+data Edge = Edge (Node Object)
+                 (Node Relationship)
+```
+
+> * No object has an edge with another object
+> * No relationship has an edge with another relationship
+> * So why are they combined in the same datatype?
+
+## Nodes and edges are bipartite {data-background="images/bipartite.png" data-background-size="auto 100%"}
+
+## Split them apart
+
+> * Before: `G = (object | relationship) + edges`
+> * Now:    `G = objects + relationships + edges`
+
+Notes
+:    * We now have three sets rather than the two found in the
+       definition.
+
+## Do we still need the `edges` set?
+
+> * Explicit realisation of the `incidentTo` and `ends` methods.
+> * Why not attach those values directly to the `objects` and
+>   `relationships`?
+> * Convert these `Set`s into dictionaries.
+
+## Haven't you just re-invented adjacency lists?
+
+
+
 ---
 # reveal.js settings
 theme: solarized
