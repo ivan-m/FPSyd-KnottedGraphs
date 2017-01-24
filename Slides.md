@@ -137,7 +137,11 @@ Tie a knot in it
 ## Tying the knot
 
 > * Using laziness to create a value that depends on itself.
-> * `fibs = 1 : 1 : zipWith (+) fibs (tail fibs)`{.haskell}
+> *
+>     ```haskell
+>     fibs = 1 : 1 : zipWith (+) fibs
+>                                (tail fibs)
+>     ```
 
 ## The idea
 
@@ -167,16 +171,16 @@ class Graph g where
   type Vertex g
   type Arc    g
 
-  vertices   :: g -> Set (Vertex g)
-  arcs       :: g -> Set (Arc g)
-  incidentTo :: g -> Vertex g -> Set (Arc g)
-  ends       :: g -> Arc g -> Set (Vertex g)
+  vertices :: g -> Set (Vertex g)
+  arcs     :: g -> Set (Arc g)
+  incident :: g -> Vertex g -> Set (Arc g)
+  ends     :: g -> Arc g -> Set (Vertex g)
 ```
 
 Notes
 :   * Assume some `Set` type
     * For `ends`, non-hyper graphs require a 2-Set.
-    * Should `incidentTo` and `ends` return a `Maybe`?
+    * Should `incident` and `ends` return a `Maybe`?
 
 ## Existing structure
 
@@ -195,10 +199,8 @@ Notes
 
 ```haskell
 data Node object relationship a where
-  -- Requires an identifier
   Object :: object -> Node Object
 
-  -- Takes an identifier along with the ends
   Relationship :: relationship
                   -> Node Relationship
 
@@ -219,7 +221,8 @@ data Edge = Edge (Node Object)
                  (Node Relationship)
 
 newtype GrNew object relationship
-  = GrNew (GrEx (Node object relationship) Edge)
+  = GrNew (GrEx (Node object relationship)
+                Edge)
 ```
 
 Notes
@@ -232,13 +235,12 @@ Notes
 instance Graph (GrNew o r) where
   type Vertex (GrNew o r) = o
   type Arc    (GrNew o r) = r
-
-  vertices     = mapMaybe getO . vertices
-  arcs         = mapMaybe getR . vertices
-  incidentTo g = mapMaybe getR . incidentTo g
-                   . Object
-  ends       g = mapMaybe getO . incidentTo g
-                   . Relationship
+  vertices   = mapMaybe getO . vertices
+  arcs       = mapMaybe getR . vertices
+  incident g = mapMaybe getR . incident g
+                 . Object
+  ends     g = mapMaybe getO . incident g
+                 . Relationship
 ```
 Notes
 :   * Blindly unwrapping `GrNew` here... if only there was a library
@@ -273,7 +275,7 @@ Notes
 
 ## Do we still need the `edges` set?
 
-> * Explicit realisation of the `incidentTo` and `ends` methods.
+> * Explicit realisation of the `incident` and `ends` methods.
 > * Why not attach those values directly to the `objects` and
 >   `relationships`?
 > * Convert these `Set`s into dictionaries.
