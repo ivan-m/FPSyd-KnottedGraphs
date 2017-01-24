@@ -184,6 +184,7 @@ class Graph g where
 
 Notes
 :   * Assume some `Set` type
+         - Actually `Bag` or `MultiSet`
     * For `ends`, non-hyper graphs require a 2-Set.
     * Should `incident` and `ends` return a `Maybe`?
 
