@@ -395,6 +395,19 @@ Notes
 > * Andrey had already used this exact datatype.
 > * But I've "derived" it.
 
+ex relatio
+==========
+
+## Is this new/novel?\?
+
+> * Probably not that much.
+> * I just wanted to see where I would get to.
+
+## What's next?
+
+> * Try and extend this further if possible.
+>       - Help please!
+> * Use this to implement a new library.
 
 ---
 # reveal.js settings
